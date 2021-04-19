@@ -13,7 +13,7 @@ export const Button = ({ titulo, ...rest }: ButtonProps) => {
       <Text style={styles.buttonText}>
         {titulo}
       </Text>
-    </TouchableOpacity>
+    </TouchableOpacity> 
   )
 }
 
