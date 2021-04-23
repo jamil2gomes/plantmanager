@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { KeyboardAvoidingView, Platform, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { KeyboardAvoidingView, Platform, SafeAreaView, StyleSheet, Text, TextInput, View, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import Button from '../components/Button';
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function UserIdentification() {
 
@@ -24,6 +25,19 @@ export function UserIdentification() {
     function handleInputChange(value: string) {
         setIsFilled(!!value);
         setName(value);
+    }
+
+    async function handleInputConfirmar(){
+        if (! name) return Alert.alert('Me diz como chamar você 😢')
+
+        await AsyncStorage.setItem('@plantmanager:user', name);
+         navigate('Confirmation',{
+             title:'Prontinho',
+             subtitle: 'Agora vamos começar a cuidar das suas plantinhas com muito cuidado.',
+             buttonTitle: 'Começar',
+             icon:'smile',
+             nextScreen: 'PlantSelect'
+         });
     }
 
     return (
@@ -56,9 +70,7 @@ export function UserIdentification() {
                                 onChangeText={handleInputChange}
                             />
                             <View style={styles.footer}>
-                                <Button titulo="Confirmar" onPress={() => {
-                                    if (isFilled) navigate('Confirmation');
-                                }} />
+                                <Button titulo="Confirmar" onPress={() => {handleInputConfirmar()}} />
                             </View>
                         </View>
 

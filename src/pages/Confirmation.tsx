@@ -1,31 +1,48 @@
 import React from 'react';
-import { useNavigation } from '@react-navigation/core';
+import { useNavigation, useRoute } from '@react-navigation/core';
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
 import Button from '../components/Button';
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
+import { TextInput } from 'react-native-gesture-handler';
+
+interface Params{
+    title: string;
+    subtitle: string;
+    buttonTitle: string;
+    icon: 'smile' | 'hug';
+    nextScreen: string;
+
+}
+
+const emojis = {
+    hug: '🤗',
+    smile: '😄',
+}
 
 export default function Confirmation() {
 
     const {navigate} = useNavigation();
+    const {params} = useRoute();
+    const {title, subtitle,buttonTitle, icon, nextScreen} = params as Params;
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.content}>
                 <Text style={styles.emoji}>
-                    😄
+                    {emojis[icon]}
                 </Text>
 
                 <Text style={styles.title}>
-                   Prontinho
+                  {title}
                 </Text>
 
                 <Text style={styles.subtitle}>
-                   Agora vamos começar a cuidar das suas plantinhas com muito cuidado
+                   {subtitle}
                 </Text>
 
                 <View style={styles.footer}>
-                    <Button titulo="Começar" onPress={()=> navigate('PlantSelect')}/>
+                    <Button titulo={buttonTitle} onPress={()=> navigate(nextScreen)}/>
                </View>
             </View>
             
