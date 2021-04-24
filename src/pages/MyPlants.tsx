@@ -1,18 +1,37 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, Image, FlatList } from 'react-native'
+import { View, Text, StyleSheet, Image, FlatList, Alert } from 'react-native'
 import Header from '../components/Header'
 import colors from '../styles/colors'
 import waterDrop from '../assets/waterdrop.png';
-import { loadPlant, PlantProps } from '../libs/storage';
+import { loadPlant, PlantProps, removePlants } from '../libs/storage';
 import { formatDistance } from 'date-fns';
 import { pt } from 'date-fns/locale';
 import fonts from '../styles/fonts';
 import PlantCardSecondary from '../components/PlantCardSecondary';
+import Load from '../components/Load';
 export default function MyPlants() {
 
     const [plants, setPlants] = useState<PlantProps[]>([]);
     const [loading, setLoading] = useState(true);
     const [nextWatered, setNextWatered] = useState<string>();
+
+    function handleRemove(plant: PlantProps) {
+        Alert.alert('Remover', `Deseja remover a plants ${plant.name} ?`, [{
+            text: 'Não',
+            style: 'cancel'
+        },
+        {
+            text: 'Não',
+            onPress: async () => {
+                try {
+                    await removePlants(plant.id);
+                    setPlants(oldPlants => oldPlants.filter((item) => item.id !== plant.id));
+                } catch (error) {
+                    Alert.alert("Erro ao remover a plantinha");
+                }
+            }
+        }])
+    }
 
     useEffect(() => {
         async function loadStorageData() {
@@ -32,6 +51,10 @@ export default function MyPlants() {
 
 
     }, [])
+
+    if (loading)
+        return <Load />
+
 
     return (
         <View style={styles.container}>
@@ -53,7 +76,11 @@ export default function MyPlants() {
                 <FlatList
                     data={plants}
                     keyExtractor={(item) => String(item.id)}
-                    renderItem={({ item }) => (<PlantCardSecondary data={item} />)}
+                    renderItem={({ item }) => (
+                        <PlantCardSecondary
+                            handleRemove={() => handleRemove(item)}
+                            data={item} />
+                    )}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ flex: 1 }}
                 />
@@ -104,7 +131,7 @@ const styles = StyleSheet.create({
     plantsTitle: {
         fontSize: 24,
         fontFamily: fonts.heading,
-        colors: colors.heading,
+        color: colors.heading,
         marginVertical: 20,
     }
 

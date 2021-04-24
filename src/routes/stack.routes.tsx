@@ -8,6 +8,7 @@ import Confirmation from '../pages/Confirmation';
 import PlantSave from '../pages/PlantSave';
 import MyPlants from '../pages/MyPlants';
 import AuthRoutes from './tabs.routes';
+import PlantSelection from '../pages/PlantSelection';
 
 const StackRoutes = createStackNavigator();
 
