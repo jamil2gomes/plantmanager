@@ -43,35 +43,36 @@ const PlantSelection: React.FC = () => {
 
         fetchEnviroment();
 
-        return () => { }
+       
     }, [])
 
 
     useEffect(() => {
         fetchPlants();
-        return () => { }
+        
     }, [])
 
     async function fetchPlants() {
-        const { data } = await api.get(`plants?_sort=name&_order=asc?_page=${page}&_limit=8`);
+        const { data } = await api.get(`plants?_sort=name&_order=asc&_page=${page}&_limit=8`);
 
-        if (!data) {
+        if (!data)
             return setLoading(true);
-        }
 
         if (page > 1) {
-            setPlants(oldValue => [...oldValue, ...data])
-            setFilteredPlants(oldValue => [...oldValue, ...data])
+            setPlants(oldValue => [...oldValue, ...data]);
+            setFilteredPlants(oldValue => [...oldValue, ...data]);
+
         } else {
             setPlants(data);
             setFilteredPlants(data);
         }
-        setLoadingMore(false);
+
         setLoading(false);
+        setLoadingMore(false);
     }
 
     function handlePlantSelect (plant: PlantProps){
-        navigate('PlantSave', {plant});
+        navigate('PlantSave', {plant:plant});
     }
 
     function handleEnviromentSelected(environment: string) {
@@ -154,8 +155,6 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor: colors.background
     },
 

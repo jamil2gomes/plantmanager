@@ -24,11 +24,13 @@ const styles = StyleSheet.create({
 
   buttom: {
     backgroundColor: colors.green,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 16,
     marginBottom: 10,
-    flex: 1
+    width: '100%',
+    height: 56,
+    paddingHorizontal: 20,
   },
 
   buttonText: {

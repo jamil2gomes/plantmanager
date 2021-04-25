@@ -29,12 +29,12 @@ const styles = StyleSheet.create({
 
     button: {
       backgroundColor: colors.shape,
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: 12,
-      marginHorizontal: 5,
-      height: 40,
-      width: 76
+        height: 40,
+        width: 76,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 12,
+        marginHorizontal: 5,
     },
 
     buttonActive: {
@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
   
     buttonText: {
       color: colors.heading,
-      fontSize: 24,
       fontFamily: fonts.text
     },
 

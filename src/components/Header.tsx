@@ -1,15 +1,24 @@
 import React, { useEffect, useState} from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, Platform } from 'react-native'
 import colors from '../styles/colors';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
-
-import naruto from '../assets/naruto.png';
+import { Entypo as Icon } from '@expo/vector-icons';
+import profileUser from '../assets/profile-user.png';
 import fonts from '../styles/fonts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { RectButton } from 'react-native-gesture-handler';
 
 export default function Header() {
 
     const [userName, setUserName] = useState<string>();
+
+    async function handleLogOut(){
+        try {
+            
+        } catch (error) {
+            
+        }
+    }
 
     useEffect(() => {
 
@@ -17,7 +26,7 @@ export default function Header() {
             const user = await AsyncStorage.getItem('@plantmanager:user');
             setUserName(user || '');
         }
-        
+        loadStorageUserName();
     }, [userName])
 
     return (
@@ -27,7 +36,15 @@ export default function Header() {
                 <Text style={styles.userName}>{userName}</Text>
             </View>
 
-            <Image source={naruto} style={styles.image} />
+            <View style={styles.containerUser}>
+                <Image source={profileUser} style={styles.image} />
+                <RectButton style={styles.containerUserLogOut} onPress={()=>{}}>
+                <Icon name="log-out"  />
+                    <Text>
+                     Sair
+                    </Text>
+                </RectButton>
+            </View>
         </View>
     )
 }
@@ -40,8 +57,19 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingVertical: 20,
-        marginTop: getStatusBarHeight(),
-        padding: 20
+        marginTop:getStatusBarHeight(),
+    },
+
+    containerUser: {
+        justifyContent: 'space-around',
+        alignItems: 'center',
+    },
+
+    containerUserLogOut: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 10
     },
 
     image: {

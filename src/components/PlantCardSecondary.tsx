@@ -61,14 +61,14 @@ const styles = StyleSheet.create({
 
     button: {
         backgroundColor: colors.shape,
-        paddingVertical: 25,
-        paddingHorizontal: 10,
-        alignItems: 'center',
-        borderRadius: 20,
-        marginVertical: 5,
         width: '100%',
-        flexDirection: 'row',
-        flex: 1
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 20,
+    marginBottom: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     },
 
     title: {

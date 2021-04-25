@@ -36,7 +36,12 @@ export default function MyPlants() {
     useEffect(() => {
         async function loadStorageData() {
             const plantsStoraged = await loadPlant();
-
+            if (plantsStoraged.length === 0) {
+                setNextWatered('')
+                setPlants(plantsStoraged);
+                setLoading(false);
+                return;
+            }
             const nextTime = formatDistance(
                 new Date(plantsStoraged[0].dateTimeNotification).getTime(),
                 new Date().getTime(),
@@ -59,34 +64,46 @@ export default function MyPlants() {
     return (
         <View style={styles.container}>
             <Header />
-            <View style={styles.spotlight}>
-                <Image
-                    source={waterDrop}
-                    style={styles.spotlightImage}
-                />
-                <Text style={styles.spotlightText}>
-                    {nextWatered}
-                </Text>
-            </View>
+            {
+                plants.length === 0 ?
+                    <View style={styles.container}>
+                        <Text style={[styles.noPlantsTitle, ]}>
+                            Sem plantinhas salvas!{'\n'}
+                            {'😢'}
+                    </Text>
+                    </View>
+                    :
+                    <View>
+                        <View style={styles.spotlight}>
+                            <Image
+                                source={waterDrop}
+                                style={styles.spotlightImage}
+                            />
+                            <Text style={styles.spotlightText}>
+                                {nextWatered}
+                            </Text>
+                        </View>
 
-            <View style={styles.plants}>
-                <Text style={styles.plantsTitle}>
-                    Próximas regadas
+                        <View style={styles.plants}>
+                            <Text style={styles.plantsTitle}>
+                                Próximas regadas
                 </Text>
-                <FlatList
-                    data={plants}
-                    keyExtractor={(item) => String(item.id)}
-                    renderItem={({ item }) => (
-                        <PlantCardSecondary
-                            handleRemove={() => handleRemove(item)}
-                            data={item} />
-                    )}
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{ flex: 1 }}
-                />
-            </View>
+                            <FlatList
+                                data={plants}
+                                keyExtractor={(item) => String(item.id)}
+                                renderItem={({ item }) => (
+                                    <PlantCardSecondary
+                                        handleRemove={() => handleRemove(item)}
+                                        data={item} />
+                                )}
+                                showsVerticalScrollIndicator={false}
+                                contentContainerStyle={{ flex: 1 }}
+                            />
+                        </View>
+                    </View>
+            }
         </View>
-    )
+    );
 }
 
 
@@ -96,8 +113,8 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal: 30,
-        paddingTop: 50,
+        paddingHorizontal: 20,
+        paddingTop: 30,
         backgroundColor: colors.background
     },
 
@@ -108,24 +125,26 @@ const styles = StyleSheet.create({
         height: 110,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        padding: 16
     },
 
     spotlightImage: {
-        width: 60,
-        height: 60,
+        width: 56,
+        height: 56,
     },
 
     spotlightText: {
         flex: 1,
         color: colors.blue,
-        paddingHorizontal: 20,
-        textAlign: 'justify'
+        marginLeft: 24,
+        fontFamily: fonts.text,
+
     },
 
     plants: {
         flex: 1,
-        width: '100%',
+        marginTop: 40,
     },
 
     plantsTitle: {
@@ -133,6 +152,13 @@ const styles = StyleSheet.create({
         fontFamily: fonts.heading,
         color: colors.heading,
         marginVertical: 20,
+    },
+    noPlantsTitle: {
+        fontSize: 24,
+        fontFamily: fonts.heading,
+        color: colors.heading,
+        marginBottom: 16,
+        textAlign: 'center',
     }
 
 })
